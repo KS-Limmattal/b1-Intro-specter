@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 public class GameOfLife {
     public static boolean[][] createRandom(int m, int n) {
         boolean[][] out_array = new boolean[n][m];
@@ -13,15 +15,14 @@ public class GameOfLife {
         boolean target_living = cells[y][x];
         int living_neighbours = 0;
         for (int i = y - 1; i < y + 2; i++) {
-            for (int j = x; j < x + 2; j++) {
-                if (i == j) {continue;}
-                // TODO: Fix this
-                int ii = (i < 0) ? cells.length - 1 : ((i > cells.length) ? 0 : i);
-                int jj = (j < 0) ? cells[0].length - 1 : ((j > cells[0].length) ? 0 : j);
+            for (int j = x - 1; j < x + 2; j++) {
+                if (i == y && j == x) {continue;}
+                int ii = (i < 0) ? cells.length - 1 : ((i > cells.length - 1) ? 0 : i);
+                int jj = (j < 0) ? cells[0].length - 1 : ((j > cells[0].length - 1) ? 0 : j);
                 living_neighbours += (cells[ii][jj]) ? 1 : 0;
             }
         }
-        return target_living && (living_neighbours == 2 || living_neighbours == 3) || !target_living && living_neighbours == 3;
+        return (target_living && (living_neighbours == 2 || living_neighbours == 3)) || (!target_living && living_neighbours == 3);
     }
 
     public static boolean[][] getNextGeneration(boolean[][] cells) {
@@ -36,24 +37,35 @@ public class GameOfLife {
 
     public static void printCells(boolean[][] cells) {
         for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells.length; j++) {
-                System.out.print(cells[i][j] + " ");
+            for (int j = 0; j < cells[0].length; j++) {
+                System.out.print(((cells[i][j]) ? "■" : ".") + " ");
             }
             System.out.println();
         }
     }
 
-    public static void main(String[] args) {
-        int m = 5;
-        int n = 5;
-        int numberOfGenerations = 5;
+    public static void main(String[] args) throws InterruptedException {
+        int m = 7;
+        int n = 7;
+        int numberOfGenerations = 20;
+
+        /*
+        boolean[][] array = { // glider demo
+            {false, false, true, false, false}, 
+            {true, false, true, false, false}, 
+            {false, true, true, false, false}, 
+            {false, false, false, false, false}, 
+            {false, false, false, false, false}, 
+        };
+        */
 
         boolean[][] array = createRandom(m, n);
 
-        for (int i = 0; i < numberOfGenerations + 1; i++) {
+        for (int i = 0; i <= numberOfGenerations; i++) {
+            System.out.println(i + ":");
             printCells(array);
             array = getNextGeneration(array);
-            //TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 }

@@ -37,7 +37,7 @@ public class Calculations {
         System.out.println(square(-2));
         System.out.println(square(a));
         System.out.println(square(a + b));
-        System.out.println(square(2.5)); // Scheitert wegen falschem Argumenttyp!
+        //System.out.println(square(2.5)); // Scheitert wegen falschem Argumenttyp!
         System.out.println(betrag(3.1));
         System.out.println(betrag(-1.1));
         System.out.println(betrag(a)); // Funktioniert trotz falschem Argumenttyp wegen automatischem Type Casting (=Typkonversion)
